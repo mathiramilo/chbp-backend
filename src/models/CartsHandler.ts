@@ -1,5 +1,5 @@
 import fs from 'fs'
-import { v4 as uuidv4 } from 'uuid'
+import path from 'path'
 import { Cart, Product } from '../types/types'
 
 class CartsHandler {
@@ -11,7 +11,7 @@ class CartsHandler {
       carts.push(cart)
 
       await fs.promises.writeFile(
-        '../data/carts.json',
+        path.resolve(__dirname, '../data/carts.json'),
         JSON.stringify(carts)
       )
     } catch (err) {
@@ -28,7 +28,7 @@ class CartsHandler {
         const newCarts = allCarts.filter(cart => cart.id !== cartId)
 
         await fs.promises.writeFile(
-          '../data/carts.json',
+          path.resolve(__dirname, '../data/carts.json'),
           JSON.stringify(newCarts)
         )
       } else {
@@ -45,7 +45,7 @@ class CartsHandler {
 
       if (cart === null) return -1
 
-      const products: Product[] = cart.products
+      const products = cart.products
       return products
     } catch (err) {
       console.log(err.message)
@@ -63,7 +63,7 @@ class CartsHandler {
       carts[cartIndex].products.push(product)
 
       await fs.promises.writeFile(
-        '../data/carts.json',
+        path.resolve(__dirname, '../data/carts.json'),
         JSON.stringify(carts)
       )
     } catch (err) {
@@ -78,10 +78,13 @@ class CartsHandler {
 
       if (cartIndex < 0) return -1
 
-      carts[cartIndex].products = carts[cartIndex].products.filter(prod => prod.id !== productId)
+      if (!carts[cartIndex].products.find(prod => prod.id === productId)) return -2
+
+      const newCarts = carts[cartIndex].products.filter(prod => prod.id !== productId)
+      carts[cartIndex].products = newCarts
 
       await fs.promises.writeFile(
-        '../data/carts.json',
+        path.resolve(__dirname, '../data/carts.json'),
         JSON.stringify(carts)
       )
     } catch (err) {
@@ -105,7 +108,7 @@ class CartsHandler {
   getAll = async (): Promise<Cart[]> => {
     try {
       const content = await fs.promises.readFile(
-        '../data/carts.json',
+        path.resolve(__dirname, '../data/carts.json'),
         'utf-8'
       )
       const carts = JSON.parse(content || '[]')
