@@ -1,0 +1,9 @@
+# Dependencies
+node_modules
+package-lock.json
+
+# Enviroment variables
+.env
+
+# Production
+build
