@@ -1,12 +1,9 @@
 import fs from 'fs'
+import path from 'path'
 import { Product } from '../types/types'
 
 class ProductsHandler {
-  fileName: string
-
-  constructor(fileName: string) {
-    this.fileName = fileName
-  }
+  constructor() {}
 
   save = async (product: Product) => {
     try {
@@ -14,17 +11,17 @@ class ProductsHandler {
       products.push(product)
 
       await fs.promises.writeFile(
-        `data/${this.fileName}`,
+        path.resolve(__dirname, '../data/products.json'),
         JSON.stringify(products)
       )
     } catch (err) {
-      console.log(err.message.red)
+      console.log(err.message)
     }
   }
 
   updateById = async (product: Product) => {
     try {
-      const { id, name, price, imgUrl } = product
+      const { id, name, description, code, imgUrl, price, stock } = product
       const products = await this.getAll()
       const productIndex = products.findIndex(prod => prod.id === id)
 
@@ -33,16 +30,19 @@ class ProductsHandler {
       const newProduct = {
         ...products[productIndex],
         name,
+        description,
+        code,
+        imgUrl,
         price,
-        imgUrl
+        stock
       }
       products[productIndex] = newProduct
       await fs.promises.writeFile(
-        `data/${this.fileName}`,
+        path.resolve(__dirname, '../data/products.json'),
         JSON.stringify(products)
       )
     } catch (err) {
-      console.log(err.message.red)
+      console.log(err.message)
     }
   }
 
@@ -54,7 +54,7 @@ class ProductsHandler {
       if (product) return product
       return null
     } catch (err) {
-      console.log(err.message.red)
+      console.log(err.message)
       return null
     }
   }
@@ -62,13 +62,13 @@ class ProductsHandler {
   getAll = async (): Promise<Product[]> => {
     try {
       const content = await fs.promises.readFile(
-        `data/${this.fileName}`,
+        path.resolve(__dirname, '../data/products.json'),
         'utf-8'
       )
       const products = JSON.parse(content || '[]')
       return products
     } catch (err) {
-      console.log(err.message.red)
+      console.log(err.message)
       return []
     }
   }
@@ -82,22 +82,22 @@ class ProductsHandler {
         const newProducts = allProducts.filter(prod => prod.id !== productId)
 
         await fs.promises.writeFile(
-          `data/${this.fileName}`,
+          path.resolve(__dirname, '../data/products.json'),
           JSON.stringify(newProducts)
         )
       } else {
         return -1
       }
     } catch (err) {
-      console.log(err.message.red)
+      console.log(err.message)
     }
   }
 
   deleteAll = async () => {
     try {
-      await fs.promises.writeFile(`data/${this.fileName}`, '[]')
+      await fs.promises.writeFile(path.resolve(__dirname, '../data/products.json'), '[]')
     } catch (err) {
-      console.log(err.message.red)
+      console.log(err.message)
     }
   }
 }

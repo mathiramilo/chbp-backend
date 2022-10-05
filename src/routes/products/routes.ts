@@ -4,7 +4,7 @@ import { Product } from '../../types/types'
 import ProductsHandler from '../../models/ProductsHandler'
 import authMiddleware from '../../middlewares/auth'
 
-const productsHandler = new ProductsHandler('products.json')
+const productsHandler = new ProductsHandler()
 
 const router = express.Router()
 

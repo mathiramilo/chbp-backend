@@ -4,8 +4,10 @@ import { Cart } from '../../types/types'
 import CartsHandler from '../../models/cartsHandler'
 import authMiddleware from '../../middlewares/auth'
 
-const cartsHandler = new CartsHandler('carts.json')
+const cartsHandler = new CartsHandler()
 
 const router = express.Router()
+
+
 
 export default router

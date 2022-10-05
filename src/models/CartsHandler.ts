@@ -1,73 +1,21 @@
 import fs from 'fs'
-import { Cart } from '../types/types'
+import { v4 as uuidv4 } from 'uuid'
+import { Cart, Product } from '../types/types'
 
 class CartsHandler {
-  fileName: string
+  constructor() {}
 
-  constructor(fileName: string) {
-    this.fileName = fileName
-  }
-
-  save = async (cart: Cart) => {
+  create = async (cart: Cart) => {
     try {
       const carts = await this.getAll()
       carts.push(cart)
 
       await fs.promises.writeFile(
-        `data/${this.fileName}`,
+        '../data/carts.json',
         JSON.stringify(carts)
       )
     } catch (err) {
-      console.log(err.message.red)
-    }
-  }
-
-  updateById = async (cart: Cart) => {
-    try {
-      const { id, products } = cart
-      const carts = await this.getAll()
-      const cartIndex = carts.findIndex(prod => prod.id === id)
-
-      if (cartIndex < 0) return -1
-
-      const newCart = {
-        ...carts[cartIndex],
-        products
-      }
-      carts[cartIndex] = newCart
-      await fs.promises.writeFile(
-        `data/${this.fileName}`,
-        JSON.stringify(carts)
-      )
-    } catch (err) {
-      console.log(err.message.red)
-    }
-  }
-
-  getById = async (cartId: string): Promise<Cart> => {
-    try {
-      const carts = await this.getAll()
-      const cart = carts.find(cart => cart.id === cartId)
-
-      if (cart) return cart
-      return null
-    } catch (err) {
-      console.log(err.message.red)
-      return null
-    }
-  }
-
-  getAll = async (): Promise<Cart[]> => {
-    try {
-      const content = await fs.promises.readFile(
-        `data/${this.fileName}`,
-        'utf-8'
-      )
-      const carts = JSON.parse(content || '[]')
-      return carts
-    } catch (err) {
-      console.log(err.message.red)
-      return []
+      console.log(err.message)
     }
   }
 
@@ -80,22 +28,91 @@ class CartsHandler {
         const newCarts = allCarts.filter(cart => cart.id !== cartId)
 
         await fs.promises.writeFile(
-          `data/${this.fileName}`,
+          '../data/carts.json',
           JSON.stringify(newCarts)
         )
       } else {
         return -1
       }
     } catch (err) {
-      console.log(err.message.red)
+      console.log(err.message)
     }
   }
 
-  deleteAll = async () => {
+  getCartProducts = async (cartId: string) => {
     try {
-      await fs.promises.writeFile(`data/${this.fileName}`, '[]')
+      const cart = await this.getById(cartId)
+
+      if (cart === null) return -1
+
+      const products: Product[] = cart.products
+      return products
     } catch (err) {
-      console.log(err.message.red)
+      console.log(err.message)
+      return []
+    }
+  }
+
+  saveProduct = async (cartId: string, product: Product) => {
+    try {
+      const carts = await this.getAll()
+      const cartIndex = carts.findIndex(cart => cart.id === cartId) 
+
+      if (cartIndex < 0) return -1
+
+      carts[cartIndex].products.push(product)
+
+      await fs.promises.writeFile(
+        '../data/carts.json',
+        JSON.stringify(carts)
+      )
+    } catch (err) {
+      console.log(err.message)
+    }
+  }
+
+  deleteProduct = async (cartId: string, productId: string) => {
+    try {
+      const carts = await this.getAll()
+      const cartIndex = carts.findIndex(cart => cart.id === cartId) 
+
+      if (cartIndex < 0) return -1
+
+      carts[cartIndex].products = carts[cartIndex].products.filter(prod => prod.id !== productId)
+
+      await fs.promises.writeFile(
+        '../data/carts.json',
+        JSON.stringify(carts)
+      )
+    } catch (err) {
+      console.log(err.message)
+    }
+  }
+
+  getById = async (cartId: string): Promise<Cart> => {
+    try {
+      const carts = await this.getAll()
+      const cart = carts.find(cart => cart.id === cartId)
+
+      if (cart) return cart
+      return null
+    } catch (err) {
+      console.log(err.message)
+      return null
+    }
+  }
+
+  getAll = async (): Promise<Cart[]> => {
+    try {
+      const content = await fs.promises.readFile(
+        '../data/carts.json',
+        'utf-8'
+      )
+      const carts = JSON.parse(content || '[]')
+      return carts
+    } catch (err) {
+      console.log(err.message)
+      return []
     }
   }
 }
