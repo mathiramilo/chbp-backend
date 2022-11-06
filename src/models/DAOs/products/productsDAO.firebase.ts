@@ -1,6 +1,6 @@
-import { HTTP_STATUS } from '../../../constants/api.constants';
-import { Product } from '../../../types/types';
-import { HttpError } from '../../../utils/api.utils';
+import { HTTP_STATUS } from '../../../constants/api.constants'
+import { Product } from '../../../types/types'
+import { HttpError } from '../../../utils/api.utils'
 import FirebaseContainer from '../../containers/firebase.container'
 
 const collection = 'products'
