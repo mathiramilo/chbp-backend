@@ -1,9 +1,9 @@
 import fs from 'fs'
 import path from 'path'
 import { v4 as uuidv4 } from 'uuid'
-import { Product } from '../types/types'
-import { HTTP_STATUS } from '../constants/api.constants'
-import { HttpError } from '../utils/api.utils'
+import { Product } from '../../types/types'
+import { HTTP_STATUS } from '../../constants/api.constants'
+import { HttpError } from '../../utils/api.utils'
 
 class ProductsContainer {
   constructor() {}
@@ -51,7 +51,7 @@ class ProductsContainer {
     const productIndex = products.findIndex(prod => prod.id === id)
 
     if (productIndex < 0) {
-      const message = `Product with id ${id} does not exist`
+      const message = `Product with id ${id} does not exists`
       throw new HttpError(HTTP_STATUS.NOT_FOUND, message)
     }
 
@@ -77,7 +77,7 @@ class ProductsContainer {
     const product = products.find(prod => prod.id === id)
     
     if (!product) {
-      const message = `Product with id ${id} does not exist`
+      const message = `Product with id ${id} does not exists`
       throw new HttpError(HTTP_STATUS.NOT_FOUND, message)
     }
     return product
@@ -97,7 +97,7 @@ class ProductsContainer {
     const productToDelete = allProducts.find(prod => prod.id === id)
 
     if (!productToDelete) {
-      const message = `Product with id ${id} does not exist`
+      const message = `Product with id ${id} does not exists`
       throw new HttpError(HTTP_STATUS.NOT_FOUND, message)
     }
 

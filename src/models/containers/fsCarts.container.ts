@@ -1,9 +1,9 @@
 import fs from 'fs'
 import path from 'path'
 import { v4 as uuidv4 } from 'uuid'
-import { Cart } from '../types/types'
-import { HTTP_STATUS } from '../constants/api.constants'
-import { HttpError } from '../utils/api.utils'
+import { Cart } from '../../types/types'
+import { HTTP_STATUS } from '../../constants/api.constants'
+import { HttpError } from '../../utils/api.utils'
 import ProductsContainer from './fsProducts.container'
 
 const productsModel = new ProductsContainer()
@@ -32,7 +32,7 @@ class CartsContainer {
     const cartToDelete = allCarts.find(cart => cart.id === id)
 
     if (!cartToDelete) {
-      const message = `Cart with id ${id} does not exist`
+      const message = `Cart with id ${id} does not exists`
       throw new HttpError(HTTP_STATUS.NOT_FOUND, message)
     }
 
@@ -48,7 +48,7 @@ class CartsContainer {
       const cart = await this.getById(id)
 
       if (!cart) {
-        const message = `Cart with id ${id} does not exist`
+        const message = `Cart with id ${id} does not exists`
         throw new HttpError(HTTP_STATUS.NOT_FOUND, message)
       }
 
@@ -61,7 +61,7 @@ class CartsContainer {
     const cartIndex = carts.findIndex(cart => cart.id === cartId) 
 
     if (cartIndex < 0) {
-      const message = `Cart with id ${cartId} does not exist`
+      const message = `Cart with id ${cartId} does not exists`
       throw new HttpError(HTTP_STATUS.NOT_FOUND, message)
     }
 
@@ -80,14 +80,14 @@ class CartsContainer {
       const cartIndex = carts.findIndex(cart => cart.id === id) 
 
       if (cartIndex < 0) {
-        const message = `Cart with id ${id} does not exist`
+        const message = `Cart with id ${id} does not exists`
         throw new HttpError(HTTP_STATUS.NOT_FOUND, message)
       }
 
       const productToDelete = carts[cartIndex].products.find(product => product.id === productId)
 
       if (!productToDelete)  {
-        const message = `Product with id ${productId} does not exist in cart with id ${id}`
+        const message = `Product with id ${productId} does not exists in cart with id ${id}`
         throw new HttpError(HTTP_STATUS.NOT_FOUND, message)
       }
 
@@ -105,7 +105,7 @@ class CartsContainer {
     const carts = await this.getAll()
     const cart = carts.find(cart => cart.id === id)
     if (!cart) {
-      const message = `Cart with id ${id} does not exist`
+      const message = `Cart with id ${id} does not exists`
       throw new HttpError(HTTP_STATUS.NOT_FOUND, message)
     }
     return cart
