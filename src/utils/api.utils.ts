@@ -5,7 +5,7 @@ export const successResponse = data => {
   }
 }
 
-export const errorResponse = (message) => {
+export const errorResponse = message => {
   return {
     success: false,
     error: message

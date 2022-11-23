@@ -1,6 +1,6 @@
 import { HTTP_STATUS } from '../constants/api.constants'
 import { successResponse } from '../utils/api.utils'
-import { CartsDAO } from '../models/DAOs/app.daos'
+import { CartsDAO } from '../models/daos/app.daos'
 
 const cartsDAO = new CartsDAO()
 
