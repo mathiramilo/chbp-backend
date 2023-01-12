@@ -5,8 +5,8 @@ package-lock.json
 # Enviroment variables
 .env
 
-# Firebase Credentials
-firebase.config.json
-
 # Production
 build
+
+# Logs
+logs

@@ -1,16 +1,17 @@
 import app from './app'
 import envConfig from './config'
 import MongoContainer from './models/containers/mongo.container'
+import logger from './utils/logger.utils'
 
 const PORT = envConfig.PORT || 8080
 
 const server = app.listen(PORT, () => {
   MongoContainer.connect().then(() => {
-    console.log(`Server is up and running on port ${PORT}`)
-    console.log('Connected to MongoDB')
+    logger.info(`Server is up and running on port ${PORT}`)
+    logger.info('Connected to MongoDB')
   })
 })
 
 server.on('error', error => {
-  console.error(`Error: ${error}`)
+  logger.error(`Error: ${error}`)
 })

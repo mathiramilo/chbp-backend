@@ -1,22 +1,17 @@
 import express from 'express'
-import logger from './middlewares/logger'
-import errorMiddleware from './middlewares/error'
+import loggerMiddleware from './middlewares/logger.middleware'
+import errorMiddleware from './middlewares/error.middleware'
 import apiRoutes from './routes/api.routes'
+import errorRoutes from './routes/error.routes'
 
 const app = express()
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-app.use(logger)
+app.use(loggerMiddleware)
 
 app.use('/api', apiRoutes)
-app.get('*', (req, res) => {
-  const { url, method } = req
-  res.status(404).json({
-    error: -2,
-    description: `route ${url} method ${method} not implemented`
-  })
-})
+app.use(errorRoutes)
 
 app.use(errorMiddleware)
 
