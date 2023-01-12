@@ -7,7 +7,7 @@ const PORT = envConfig.PORT || 8080
 
 const DATASOURCE_OPTIONS = {
   mongo: MongoContainer,
-  firebase: FirebaseContainer,
+  firebase: FirebaseContainer
 }
 
 const datasource = DATASOURCE_OPTIONS[envConfig.DATASOURCE]
