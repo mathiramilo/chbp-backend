@@ -3,6 +3,8 @@ import dbConfig from '../../db/db.config'
 import { HttpError } from '../../utils/api.utils'
 import { HTTP_STATUS } from '../../constants/api.constants'
 
+mongoose.set('strictQuery', true)
+
 class MongoContainer {
   model
 

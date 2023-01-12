@@ -3,7 +3,13 @@
   "version": "1.0.0",
   "description": "Coderhouse backend course final proyect",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "start": "node build/server.js",
+    "dev": "nodemon src/server.ts",
+    "build": "tsc",
+    "build-watch": "tsc -watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "keywords": [],
   "author": "Mathias Ramilo",
   "license": "ISC",

@@ -4,8 +4,7 @@ dotenv.config()
 const envConfig = {
   PORT: process.env.PORT,
   ADMIN: process.env.ADMIN,
-  MONGO_URI: process.env.MONGO_URI,
-  DATASOURCE: process.env.DATASOURCE
+  MONGO_URI: process.env.MONGO_URI
 }
 
 export default envConfig
