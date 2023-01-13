@@ -3,10 +3,10 @@ import productSchema from '../schemas/product.schema'
 
 const collection = 'products'
 
-class ProductsMongoDAO extends MongoContainer {
+class ProductsDAO extends MongoContainer {
   constructor() {
     super(collection, productSchema)
   }
 }
 
-export default ProductsMongoDAO
+export default ProductsDAO

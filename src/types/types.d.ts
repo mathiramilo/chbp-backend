@@ -9,8 +9,13 @@ export interface Product {
   stock: number
 }
 
+export interface CartProduct {
+  product: Product
+  qty: number
+}
+
 export interface Cart {
   id: string
   timestamp: string
-  products: Product[]
+  products: CartProduct[]
 }
