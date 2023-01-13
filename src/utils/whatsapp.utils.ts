@@ -8,8 +8,10 @@ const twilioClient = twilio(
 
 const sendWhatsapp = async (name, email, products) => {
   const productsListText = products
-    .map(product => {
-      return `${product.name} - ${product.description} - US$ ${product.price}}`
+    .map(item => {
+      return `${item.qty}x ${item.product.name} (${
+        item.product.description
+      }) - US$ ${(item.product.price * item.qty).toFixed(2)}`
     })
     .join('\n')
 
@@ -17,7 +19,7 @@ const sendWhatsapp = async (name, email, products) => {
   
   ${productsListText}`
 
-  const messageResponse = await twilioClient.messages.create({
+  await twilioClient.messages.create({
     body: text,
     from: envConfig.TWILIO_WHATSAPP,
     to: envConfig.ADMIN_WHATSAPP
