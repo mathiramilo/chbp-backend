@@ -130,7 +130,7 @@ class CartsController {
       `
 
       sendEmail({
-        subject: `New order of ${name} - (${email})`,
+        subject: `New Order of ${name} - (${email})`,
         html: bodyHtml
       })
 
@@ -142,7 +142,7 @@ class CartsController {
         })
         .join('\n')
 
-      const text = `New order of ${name} - (${email})
+      const text = `New Order of ${name} - (${email})
   
       ${productsListText}`
 

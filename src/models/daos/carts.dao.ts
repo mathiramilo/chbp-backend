@@ -1,7 +1,7 @@
 import { HTTP_STATUS } from '../../constants/api.constants'
 import { HttpError } from '../../utils/api.utils'
 import MongoContainer from '../containers/mongo.container'
-import cartSchema from '../schemas/cart.schema'
+import CartSchema from '../schemas/Cart.schema'
 import ProductsDAO from './products.dao'
 
 const productsDAO = new ProductsDAO()
@@ -10,7 +10,7 @@ const collection = 'carts'
 
 class CartsDAO extends MongoContainer {
   constructor() {
-    super(collection, cartSchema)
+    super(collection, CartSchema)
   }
 
   async getProducts(cartId) {
