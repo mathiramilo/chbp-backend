@@ -6,11 +6,11 @@ const twilioClient = twilio(
   envConfig.TWILIO_AUTH_TOKEN
 )
 
-const sendSMS = async (to, body) => {
+const sendSMS = async options => {
   await twilioClient.messages.create({
-    body,
+    body: options.message,
     from: envConfig.TWILIO_NUMBER,
-    to
+    to: options.to
   })
 }
 

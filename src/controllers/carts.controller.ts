@@ -1,6 +1,6 @@
 import { HTTP_STATUS } from '../constants/api.constants'
 import { HttpError, successResponse } from '../utils/api.utils'
-import { sendOrderMail } from '../utils/email.utils'
+import sendEmail from '../utils/email.utils'
 import sendSMS from '../utils/sms.utils'
 import sendWhatsapp from '../utils/whatsapp.utils'
 import CartsDAO from '../models/daos/carts.dao'
@@ -78,6 +78,7 @@ class CartsController {
   async checkout(req, res, next) {
     const { cartId } = req.params
     const { name, email, phone } = req.body
+
     try {
       if (!name || !email || !phone) {
         const message =
@@ -86,18 +87,74 @@ class CartsController {
       }
 
       const products = await cartsDAO.getProducts(cartId)
+
       if (products.length < 1) {
         const message = 'The cart must have at least one product to checkout'
         throw new HttpError(HTTP_STATUS.BAD_REQUEST, message)
       }
 
       await cartsDAO.emptyCart(cartId)
-      sendOrderMail(name, email, products)
-      sendWhatsapp(name, email, products)
-      sendSMS(
-        phone,
-        'Your order has been received and its being processed. Thanks for your purchase! CHBP Team'
+
+      // Email, Whatsapp and SMS sending
+      const totalCost = products.reduce(
+        (acc, item) => acc + item.product.price * item.qty,
+        0
       )
+
+      const emailStyles = {
+        productsContainer: 'margin: 10px 0px;',
+        card: 'border: 1px solid #ccc; padding: 12px; margin: 10px 0px; border-radius: 8px;',
+        title: 'font-size: 18px; font-weight: bold;'
+      }
+
+      const productsCardsHtml = products
+        .map(item => {
+          return `
+          <div style="${emailStyles.card}">
+            <h3>${item.product.name}</h3>
+            <p>${item.product.description}</p>
+            <p>Total: US$ ${item.product.price} x ${item.qty} = US$ ${(
+            item.product.price * item.qty
+          ).toFixed(2)}</p>
+          </div>
+        `
+        })
+        .join('')
+
+      const bodyHtml = `
+        <h2 style="${emailStyles.title}">Products Ordered</h2>
+        <div style=${emailStyles.productsContainer}>
+          ${productsCardsHtml}
+        </div>
+        <h2 style="${emailStyles.title}">Total: US$ ${totalCost.toFixed(2)}</h2>
+      `
+
+      sendEmail({
+        subject: `New order of ${name} - (${email})`,
+        html: bodyHtml
+      })
+
+      const productsListText = products
+        .map(item => {
+          return `${item.qty}x ${item.product.name} (${
+            item.product.description
+          }) - US$ ${(item.product.price * item.qty).toFixed(2)}`
+        })
+        .join('\n')
+
+      const text = `New order of ${name} - (${email})
+  
+      ${productsListText}`
+
+      sendWhatsapp({
+        message: text
+      })
+
+      sendSMS({
+        to: phone,
+        message: `Your order has been received and its being processed. Thanks for your purchase! CHBP Team`
+      })
+
       const response = successResponse({
         buyer: { name, email, phone },
         products
