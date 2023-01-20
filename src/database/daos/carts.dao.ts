@@ -1,7 +1,7 @@
 import { HTTP_STATUS } from '../../constants/api.constants'
 import { HttpError } from '../../utils/api.utils'
 import MongoContainer from '../containers/mongo.container'
-import CartSchema from '../schemas/Cart.schema'
+import CartSchema from '../models/Cart'
 import ProductsDAO from './products.dao'
 
 const productsDAO = new ProductsDAO()
@@ -27,16 +27,10 @@ class CartsDAO extends MongoContainer {
 
     if (productAlreadyInCart) {
       const cartProducts = await this.getProducts(cartId)
-      const productIndex = cartProducts.findIndex(
-        item => item.product._id.toString() === prodId
-      )
+      const productIndex = cartProducts.findIndex(item => item.product._id.toString() === prodId)
       cartProducts[productIndex].qty++
 
-      updatedCart = await this.model.updateOne(
-        { _id: cartId },
-        { $set: { products: cartProducts } },
-        { new: true }
-      )
+      updatedCart = await this.model.updateOne({ _id: cartId }, { $set: { products: cartProducts } }, { new: true })
     } else {
       updatedCart = await this.model.updateOne(
         { _id: cartId },
@@ -55,9 +49,7 @@ class CartsDAO extends MongoContainer {
 
   async deleteProduct(cartId, prodId) {
     const cartProducts = await this.getProducts(cartId)
-    const newCartProducts = cartProducts.filter(
-      item => item.product._id.toString() !== prodId
-    )
+    const newCartProducts = cartProducts.filter(item => item.product._id.toString() !== prodId)
     const updatedCart = await this.model.updateOne(
       { _id: cartId },
       { $set: { products: newCartProducts } },
@@ -72,9 +64,7 @@ class CartsDAO extends MongoContainer {
 
   async decreaseProduct(cartId, prodId) {
     const cartProducts = await this.getProducts(cartId)
-    const productIndex = cartProducts.findIndex(
-      item => item.product._id.toString() === prodId
-    )
+    const productIndex = cartProducts.findIndex(item => item.product._id.toString() === prodId)
     const qty = cartProducts[productIndex].qty
 
     if (qty <= 1) {
@@ -83,11 +73,7 @@ class CartsDAO extends MongoContainer {
 
     cartProducts[productIndex].qty--
 
-    const updatedCart = await this.model.updateOne(
-      { _id: cartId },
-      { $set: { products: cartProducts } },
-      { new: true }
-    )
+    const updatedCart = await this.model.updateOne({ _id: cartId }, { $set: { products: cartProducts } }, { new: true })
 
     if (!updatedCart.matchedCount) {
       const message = `Cart with id ${cartId} does not exists`
@@ -98,11 +84,7 @@ class CartsDAO extends MongoContainer {
   }
 
   async emptyCart(cartId) {
-    const emptyCart = await this.model.updateOne(
-      { _id: cartId },
-      { $set: { products: [] } },
-      { new: true }
-    )
+    const emptyCart = await this.model.updateOne({ _id: cartId }, { $set: { products: [] } }, { new: true })
     if (!emptyCart.matchedCount) {
       const message = `Cart with id ${cartId} does not exists`
       throw new HttpError(HTTP_STATUS.NOT_FOUND, message)
@@ -112,9 +94,7 @@ class CartsDAO extends MongoContainer {
 
   async productExistsInCart(cartId, prodId) {
     const cart = await this.getById(cartId)
-    const product = cart.products.find(
-      item => item.product._id.toString() === prodId
-    )
+    const product = cart.products.find(item => item.product._id.toString() === prodId)
     if (!product) {
       return false
     }

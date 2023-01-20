@@ -1,13 +1,11 @@
 import { HTTP_STATUS } from '../constants/api.constants'
 import { successResponse } from '../utils/api.utils'
-import ProductsDAO from '../models/daos/products.dao'
-
-const productsDAO = new ProductsDAO()
+import { getProducts, getProduct, createProduct, updateProduct, deleteProduct } from '../services/products.services'
 
 class ProductsController {
   async getProducts(req, res, next) {
     try {
-      const products = await productsDAO.getAll()
+      const products = await getProducts()
       const response = successResponse(products)
       res.json(response)
     } catch (err) {
@@ -18,7 +16,7 @@ class ProductsController {
   async getProductById(req, res, next) {
     const { id } = req.params
     try {
-      const product = await productsDAO.getById(id)
+      const product = await getProduct(id)
       const response = successResponse(product)
       res.json(response)
     } catch (err) {
@@ -28,7 +26,7 @@ class ProductsController {
 
   async saveProduct(req, res, next) {
     try {
-      const newProduct = await productsDAO.save(req.body)
+      const newProduct = await createProduct(req.body)
       const response = successResponse(newProduct)
       res.status(HTTP_STATUS.CREATED).json(response)
     } catch (err) {
@@ -39,7 +37,7 @@ class ProductsController {
   async updateProduct(req, res, next) {
     const { id } = req.params
     try {
-      const updatedProduct = await productsDAO.update(id, req.body)
+      const updatedProduct = await updateProduct(id, req.body)
       const response = successResponse(updatedProduct)
       res.json(response)
     } catch (err) {
@@ -50,7 +48,7 @@ class ProductsController {
   async deleteProduct(req, res, next) {
     const { id } = req.params
     try {
-      const deletedProduct = await productsDAO.delete(id)
+      const deletedProduct = await deleteProduct(id)
       const response = successResponse(deletedProduct)
       res.json(response)
     } catch (err) {

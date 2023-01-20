@@ -3,27 +3,27 @@ import envConfig from '../config'
 import logger from './logger.utils'
 
 const sendEmail = async options => {
-  const transporter = nodemailer.createTransport({
-    host: 'smtp.ethereal.email',
-    port: 587,
-    auth: {
-      user: 'orrin89@ethereal.email',
-      pass: 'FKdutMGEyRevz2ERtM'
+  nodemailer.createTestAccount(async (err, account) => {
+    const transporter = nodemailer.createTransport({
+      host: 'smtp.ethereal.email',
+      port: 587,
+      auth: {
+        user: account.user,
+        pass: account.pass
+      }
+    })
+
+    const mailOptions = {
+      from: `"CHBP Server" ${account.user}`,
+      to: envConfig.ADMIN_EMAIL,
+      subject: options.subject,
+      html: options.html
     }
+
+    const info = await transporter.sendMail(mailOptions)
+
+    logger.info(`Email sended! Preview URL: ${nodemailer.getTestMessageUrl(info)}`)
   })
-
-  const mailOptions = {
-    from: '"CHBP Server" orrin89@ethereal.email',
-    to: envConfig.ADMIN_EMAIL,
-    subject: options.subject,
-    html: options.html
-  }
-
-  const info = await transporter.sendMail(mailOptions)
-
-  logger.info(
-    `Email sended! Preview URL: ${nodemailer.getTestMessageUrl(info)}`
-  )
 }
 
 export default sendEmail

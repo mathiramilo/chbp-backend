@@ -1,5 +1,5 @@
 import MongoContainer from '../containers/mongo.container'
-import ProductSchema from '../schemas/Product.schema'
+import ProductSchema from '../models/Product'
 
 const collection = 'products'
 

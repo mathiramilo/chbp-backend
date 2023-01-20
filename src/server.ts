@@ -1,6 +1,6 @@
 import app from './app'
 import envConfig from './config'
-import MongoContainer from './models/containers/mongo.container'
+import MongoContainer from './database/containers/mongo.container'
 import logger from './utils/logger.utils'
 
 const PORT = envConfig.PORT || 8080

@@ -1,5 +1,5 @@
 import MongoContainer from '../containers/mongo.container'
-import UserSchema from '../schemas/User.schema'
+import UserSchema from '../models/User'
 import { HttpError } from '../../utils/api.utils'
 import { HTTP_STATUS } from '../../constants/api.constants'
 

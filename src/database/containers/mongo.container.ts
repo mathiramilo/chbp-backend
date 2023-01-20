@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import dbConfig from '../../db/db.config'
+import dbConfig from '../db.config'
 import { HttpError } from '../../utils/api.utils'
 import { HTTP_STATUS } from '../../constants/api.constants'
 
@@ -40,10 +40,7 @@ class MongoContainer {
   }
 
   async update(id, item) {
-    const updatedDocument = await this.model.updateOne(
-      { _id: id },
-      { $set: { ...item } }
-    )
+    const updatedDocument = await this.model.updateOne({ _id: id }, { $set: { ...item } })
     if (!updatedDocument.matchedCount) {
       const message = `Resource with id ${id} does not exists`
       throw new HttpError(HTTP_STATUS.NOT_FOUND, message)
