@@ -19,3 +19,13 @@ export interface Cart {
   timestamp: string
   products: CartProduct[]
 }
+
+export interface User {
+  id: string
+  timestamp: string
+  fullName: string
+  email: string
+  password: string
+  phone: string
+  cartId: string
+}

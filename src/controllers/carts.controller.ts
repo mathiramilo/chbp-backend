@@ -76,8 +76,6 @@ class CartsController {
     }
   }
 
-  /* When a user checkouts, we empty the cart, send an
-  email and a wpp with the order and send an SMS to the user */
   async checkout(req, res, next) {
     const { cartId } = req.params
     const { name, email, phone } = req.body

@@ -19,6 +19,8 @@ export const deleteProductFromCart = async (cartId, prodId) => await cartsDAO.de
 
 export const decreaseProductFromCart = async (cartId, prodId) => await cartsDAO.decreaseProduct(cartId, prodId)
 
+/* When a user checkouts, we empty the cart, send an
+  email and a wpp with the order and send an SMS to the user */
 export const checkout = async (cartId, buyer) => {
   const products = await cartsDAO.getProducts(cartId)
 
