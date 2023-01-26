@@ -1,25 +1,23 @@
 import { HTTP_STATUS } from '../../constants/api.constants'
 import { HttpError } from '../../utils/api.utils'
-import MongoContainer from '../containers/mongo.container'
-import CartSchema from '../models/Cart'
+import MongoDAO from './mongo.dao'
 import ProductsDAO from './products.dao'
-
-const productsDAO = new ProductsDAO()
+import CartSchema from '../models/Cart'
 
 const collection = 'carts'
 
-class CartsDAO extends MongoContainer {
+class CartsDAO extends MongoDAO {
   constructor() {
     super(collection, CartSchema)
   }
 
-  async getProducts(cartId) {
+  async getProducts(cartId: string) {
     const cart = await this.getById(cartId)
     return [...cart.products]
   }
 
-  async saveProduct(cartId, prodId) {
-    const product = await productsDAO.getById(prodId)
+  async saveProduct(cartId: string, prodId: string) {
+    const product = await ProductsDAO.getById(prodId)
 
     const productAlreadyInCart = await this.productExistsInCart(cartId, prodId)
 
@@ -47,7 +45,7 @@ class CartsDAO extends MongoContainer {
     return updatedCart
   }
 
-  async deleteProduct(cartId, prodId) {
+  async deleteProduct(cartId: string, prodId: string) {
     const cartProducts = await this.getProducts(cartId)
     const newCartProducts = cartProducts.filter(item => item.product._id.toString() !== prodId)
     const updatedCart = await this.model.updateOne(
@@ -62,7 +60,7 @@ class CartsDAO extends MongoContainer {
     return updatedCart
   }
 
-  async decreaseProduct(cartId, prodId) {
+  async decreaseProduct(cartId: string, prodId: string) {
     const cartProducts = await this.getProducts(cartId)
     const productIndex = cartProducts.findIndex(item => item.product._id.toString() === prodId)
     const qty = cartProducts[productIndex].qty
@@ -83,7 +81,7 @@ class CartsDAO extends MongoContainer {
     return updatedCart
   }
 
-  async emptyCart(cartId) {
+  async emptyCart(cartId: string) {
     const emptyCart = await this.model.updateOne({ _id: cartId }, { $set: { products: [] } }, { new: true })
     if (!emptyCart.matchedCount) {
       const message = `Cart with id ${cartId} does not exists`
@@ -92,7 +90,7 @@ class CartsDAO extends MongoContainer {
     return emptyCart
   }
 
-  async productExistsInCart(cartId, prodId) {
+  async productExistsInCart(cartId: string, prodId: string) {
     const cart = await this.getById(cartId)
     const product = cart.products.find(item => item.product._id.toString() === prodId)
     if (!product) {
@@ -102,4 +100,4 @@ class CartsDAO extends MongoContainer {
   }
 }
 
-export default CartsDAO
+export default new CartsDAO()

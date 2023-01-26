@@ -3,10 +3,8 @@ import { HttpError } from '../utils/api.utils'
 import sendEmail from '../utils/email.utils'
 import UsersDAO from '../database/daos/users.dao'
 
-const usersDAO = new UsersDAO()
-
-export const register = async (fullName, email, password, phone) => {
-  const user = await usersDAO.save({
+export const register = async (fullName: string, email: string, password: string, phone: string) => {
+  const user = await UsersDAO.save({
     fullName,
     email,
     password,
@@ -40,8 +38,8 @@ export const register = async (fullName, email, password, phone) => {
   return user
 }
 
-export const login = async (email, password) => {
-  const user = await usersDAO.getByEmail(email)
+export const login = async (email: string, password: string) => {
+  const user = await UsersDAO.getByEmail(email)
 
   const isMatch = await user.matchPasswords(password)
 

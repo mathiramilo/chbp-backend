@@ -5,31 +5,31 @@ import sendSMS from '../utils/sms.utils'
 import sendWhatsapp from '../utils/whatsapp.utils'
 import CartsDAO from '../database/daos/carts.dao'
 
-const cartsDAO = new CartsDAO()
+export const createCart = async () => await CartsDAO.save()
 
-export const createCart = async () => await cartsDAO.save()
+export const deleteCart = async (id: string) => await CartsDAO.delete(id)
 
-export const deleteCart = async id => await cartsDAO.delete(id)
+export const getProductsFromCart = async (id: string) => await CartsDAO.getProducts(id)
 
-export const getProductsFromCart = async id => await cartsDAO.getProducts(id)
+export const saveProductToCart = async (cartId: string, prodId: string) => await CartsDAO.saveProduct(cartId, prodId)
 
-export const saveProductToCart = async (cartId, prodId) => await cartsDAO.saveProduct(cartId, prodId)
+export const deleteProductFromCart = async (cartId: string, prodId: string) =>
+  await CartsDAO.deleteProduct(cartId, prodId)
 
-export const deleteProductFromCart = async (cartId, prodId) => await cartsDAO.deleteProduct(cartId, prodId)
-
-export const decreaseProductFromCart = async (cartId, prodId) => await cartsDAO.decreaseProduct(cartId, prodId)
+export const decreaseProductFromCart = async (cartId: string, prodId: string) =>
+  await CartsDAO.decreaseProduct(cartId, prodId)
 
 /* When a user checkouts, we empty the cart, send an
   email and a wpp with the order and send an SMS to the user */
-export const checkout = async (cartId, buyer) => {
-  const products = await cartsDAO.getProducts(cartId)
+export const checkout = async (cartId: string, buyer) => {
+  const products = await CartsDAO.getProducts(cartId)
 
   if (products.length < 1) {
     const message = 'The cart must have at least one product to checkout'
     throw new HttpError(HTTP_STATUS.BAD_REQUEST, message)
   }
 
-  await cartsDAO.emptyCart(cartId)
+  await CartsDAO.emptyCart(cartId)
 
   // Email, Whatsapp and SMS sending
   const totalCost = products.reduce((acc, item) => acc + item.product.price * item.qty, 0)

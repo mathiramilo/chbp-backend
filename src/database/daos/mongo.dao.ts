@@ -1,23 +1,14 @@
 import mongoose from 'mongoose'
-import dbConfig from '../db.config'
 import { HttpError } from '../../utils/api.utils'
 import { HTTP_STATUS } from '../../constants/api.constants'
 
 mongoose.set('strictQuery', true)
 
-class MongoContainer {
+class MongoDAO {
   model
 
   constructor(collection, schema) {
     this.model = mongoose.model(collection, schema)
-  }
-
-  static async connect() {
-    await mongoose.connect(dbConfig.mongodb.uri)
-  }
-
-  static async disconnect() {
-    await mongoose.disconnect()
   }
 
   async getAll(filter = {}) {
@@ -25,7 +16,7 @@ class MongoContainer {
     return documents
   }
 
-  async getById(id) {
+  async getById(id: string) {
     const document = await this.model.findOne({ _id: id }, { __v: 0 })
     if (!document) {
       const message = `Resource with id ${id} not found`
@@ -39,7 +30,7 @@ class MongoContainer {
     return await newDocument.save()
   }
 
-  async update(id, item) {
+  async update(id: string, item) {
     const updatedDocument = await this.model.updateOne({ _id: id }, { $set: { ...item } })
     if (!updatedDocument.matchedCount) {
       const message = `Resource with id ${id} does not exists`
@@ -48,7 +39,7 @@ class MongoContainer {
     return updatedDocument
   }
 
-  async delete(id) {
+  async delete(id: string) {
     const deletedDocument = await this.model.deleteOne({ _id: id })
     if (!deletedDocument.deletedCount) {
       const message = `Resource with id ${id} does not exists`
@@ -58,4 +49,4 @@ class MongoContainer {
   }
 }
 
-export default MongoContainer
+export default MongoDAO

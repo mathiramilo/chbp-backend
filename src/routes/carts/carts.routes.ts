@@ -1,17 +1,14 @@
 import express from 'express'
-import cartsController from '../../controllers/carts.controller'
+import CartsController from '../../controllers/carts.controller'
 
 const router = express.Router()
 
-router.post('/', cartsController.createCart)
-router.delete('/:id', cartsController.deleteCart)
-router.get('/:id/products', cartsController.getProducts)
-router.post('/:cartId/products/:prodId', cartsController.saveProduct)
-router.delete('/:cartId/products/:prodId', cartsController.deleteProduct)
-router.delete(
-  '/:cartId/products/decrease/:prodId',
-  cartsController.decreaseProduct
-)
-router.post('/:cartId/checkout', cartsController.checkout)
+router.post('/', CartsController.createCart)
+router.delete('/:id', CartsController.deleteCart)
+router.get('/:id/products', CartsController.getProducts)
+router.post('/:cartId/products/:prodId', CartsController.saveProduct)
+router.delete('/:cartId/products/:prodId', CartsController.deleteProduct)
+router.delete('/:cartId/products/decrease/:prodId', CartsController.decreaseProduct)
+router.post('/:cartId/checkout', CartsController.checkout)
 
 export default router

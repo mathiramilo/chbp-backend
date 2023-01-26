@@ -1,12 +1,12 @@
-import MongoContainer from '../containers/mongo.container'
+import MongoDAO from './mongo.dao'
 import ProductSchema from '../models/Product'
 
 const collection = 'products'
 
-class ProductsDAO extends MongoContainer {
+class ProductsDAO extends MongoDAO {
   constructor() {
     super(collection, ProductSchema)
   }
 }
 
-export default ProductsDAO
+export default new ProductsDAO()
