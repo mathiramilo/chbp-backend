@@ -1,5 +1,5 @@
 import twilio from 'twilio'
-import envConfig from '../config'
+import envConfig from '../config/env.config'
 
 const twilioClient = twilio(envConfig.TWILIO_ACCOUNT_SID, envConfig.TWILIO_AUTH_TOKEN)
 

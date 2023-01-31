@@ -1,7 +1,7 @@
 import { HTTP_STATUS } from '../../constants/api.constants'
 import { HttpError } from '../../utils/api.utils'
 import MongoDAO from './mongo.dao'
-import UserSchema from '../models/User'
+import UserSchema from '../schemas/user.schema'
 
 const collection = 'users'
 

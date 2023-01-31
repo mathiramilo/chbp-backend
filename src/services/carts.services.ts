@@ -3,7 +3,7 @@ import { HttpError } from '../utils/api.utils'
 import sendEmail from '../utils/email.utils'
 import sendSMS from '../utils/sms.utils'
 import sendWhatsapp from '../utils/whatsapp.utils'
-import CartsDAO from '../database/daos/carts.dao'
+import CartsDAO from '../models/daos/carts.dao'
 
 export const createCart = async () => await CartsDAO.save()
 

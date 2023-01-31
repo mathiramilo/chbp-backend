@@ -1,4 +1,5 @@
 import express from 'express'
+import cors from 'cors'
 import loggerMiddleware from './middlewares/logger.middleware'
 import errorMiddleware from './middlewares/error.middleware'
 import apiRoutes from './routes/api.routes'
@@ -8,6 +9,7 @@ const app = express()
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use(cors())
 app.use(loggerMiddleware)
 
 app.use('/api', apiRoutes)

@@ -1,7 +1,7 @@
 import { HTTP_STATUS } from '../constants/api.constants'
 import { HttpError } from '../utils/api.utils'
 import sendEmail from '../utils/email.utils'
-import UsersDAO from '../database/daos/users.dao'
+import UsersDAO from '../models/daos/users.dao'
 
 export const register = async (fullName: string, email: string, password: string, phone: string) => {
   const user = await UsersDAO.save({

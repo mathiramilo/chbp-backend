@@ -1,4 +1,4 @@
-import ProductsDAO from '../database/daos/products.dao'
+import ProductsDAO from '../models/daos/products.dao'
 
 export const getProducts = async () => await ProductsDAO.getAll()
 export const getProduct = async (id: string) => await ProductsDAO.getById(id)

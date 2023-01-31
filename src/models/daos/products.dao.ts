@@ -1,5 +1,5 @@
 import MongoDAO from './mongo.dao'
-import ProductSchema from '../models/Product'
+import ProductSchema from '../schemas/product.schema'
 
 const collection = 'products'
 

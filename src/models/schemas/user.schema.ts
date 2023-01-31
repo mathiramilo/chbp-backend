@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-import envConfig from '../../config'
+import envConfig from '../../config/env.config'
 import { createCart } from '../../services/carts.services'
 
 const UserSchema = new mongoose.Schema({

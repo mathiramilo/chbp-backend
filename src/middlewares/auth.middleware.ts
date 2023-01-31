@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'
-import envConfig from '../config'
+import envConfig from '../config/env.config'
 import { HTTP_STATUS } from '../constants/api.constants'
 import { HttpError } from '../utils/api.utils'
 import { getUser } from '../services/users.services'

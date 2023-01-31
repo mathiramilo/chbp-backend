@@ -1,5 +1,5 @@
 import nodemailer from 'nodemailer'
-import envConfig from '../config'
+import envConfig from '../config/env.config'
 import logger from './logger.utils'
 
 const sendEmail = async options => {

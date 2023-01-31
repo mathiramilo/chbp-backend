@@ -2,7 +2,7 @@ import { HTTP_STATUS } from '../../constants/api.constants'
 import { HttpError } from '../../utils/api.utils'
 import MongoDAO from './mongo.dao'
 import ProductsDAO from './products.dao'
-import CartSchema from '../models/Cart'
+import CartSchema from '../schemas/cart.schema'
 
 const collection = 'carts'
 
