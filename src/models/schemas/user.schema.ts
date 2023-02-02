@@ -2,7 +2,6 @@ import mongoose from 'mongoose'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import envConfig from '../../config/env.config'
-import { createCart } from '../../services/carts.services'
 
 const UserSchema = new mongoose.Schema({
   timestamp: {
@@ -36,12 +35,6 @@ UserSchema.pre('save', async function (next) {
   const salt = await bcrypt.genSalt(10)
   this.password = await bcrypt.hash(this.password, salt)
   next()
-})
-
-// Create a new cart for the user after saving the user
-UserSchema.post('save', async function () {
-  const cart = await createCart()
-  this.cartId = cart._id
 })
 
 // Check if passwords matches

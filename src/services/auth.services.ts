@@ -2,6 +2,7 @@ import { HTTP_STATUS } from '../constants/api.constants'
 import { HttpError } from '../utils/api.utils'
 import sendEmail from '../utils/email.utils'
 import UsersDAO from '../models/daos/users.dao'
+import { assignCartToUser } from './users.services'
 
 export const register = async (fullName: string, email: string, password: string, phone: string) => {
   const user = await UsersDAO.save({
@@ -10,6 +11,8 @@ export const register = async (fullName: string, email: string, password: string
     password,
     phone
   })
+
+  const newUser = await assignCartToUser(user._id)
 
   // Email to the admin with the register details
   const emailStyles = {
@@ -35,7 +38,7 @@ export const register = async (fullName: string, email: string, password: string
     html: bodyHtml
   })
 
-  return user
+  return newUser
 }
 
 export const login = async (email: string, password: string) => {
