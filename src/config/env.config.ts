@@ -6,7 +6,6 @@ const envConfig = {
 
   MONGO_URI: process.env.MONGO_URI,
 
-  ADMIN: process.env.ADMIN || false,
   ADMIN_EMAIL: process.env.ADMIN_EMAIL,
   ADMIN_WHATSAPP: process.env.ADMIN_WHATSAPP,
 

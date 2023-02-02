@@ -27,7 +27,8 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Please enter a phone number']
   },
-  cartId: { type: String }
+  cartId: { type: String },
+  admin: { type: Boolean, default: false }
 })
 
 // Encrypt password before saving a new user
@@ -44,7 +45,7 @@ UserSchema.methods.matchPasswords = async function (password) {
 
 // Sign JWT and return the token
 UserSchema.methods.getSignedJwtToken = function () {
-  return jwt.sign({ id: this._id }, envConfig.JWT_SECRET, {
+  return jwt.sign({ id: this._id, email: this.email, admin: this.admin }, envConfig.JWT_SECRET, {
     expiresIn: envConfig.JWT_EXPIRE
   })
 }

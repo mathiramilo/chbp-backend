@@ -6,6 +6,6 @@ export const assignCartToUser = async (userId: string) => {
   const user = await UsersDAO.getById(userId)
   const cart = await CartsDAO.save()
   user.cartId = cart._id
-  await user.save()
+  await UsersDAO.update(user._id, user)
   return user
 }

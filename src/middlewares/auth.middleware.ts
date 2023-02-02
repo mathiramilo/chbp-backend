@@ -12,7 +12,7 @@ const authMiddleware = async (req, res, next) => {
   }
 
   if (!token) {
-    return next(new HttpError(HTTP_STATUS.UNAUTHORIZED, 'Not authorized to access this route'))
+    return next(new HttpError(HTTP_STATUS.UNAUTHORIZED, 'You must be authenticated to access this route'))
   }
 
   try {
@@ -22,13 +22,12 @@ const authMiddleware = async (req, res, next) => {
     const user = await getUser(decoded.id)
 
     if (!user) {
-      return next(new HttpError(HTTP_STATUS.NOT_FOUND, 'No user found with this id'))
+      return next(new HttpError(HTTP_STATUS.UNAUTHORIZED, 'No user matches with the token'))
     }
 
-    req.user = user
     next()
   } catch (error) {
-    return next(new HttpError(HTTP_STATUS.UNAUTHORIZED, 'Not authorized to access this route'))
+    return next(new HttpError(HTTP_STATUS.UNAUTHORIZED, 'You must be authenticated to access this route'))
   }
 }
 

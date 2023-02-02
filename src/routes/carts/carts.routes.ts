@@ -1,10 +1,14 @@
 import express from 'express'
 import CartsController from '../../controllers/carts.controller'
+import authMiddleware from '../../middlewares/auth.middleware'
+import adminMiddleware from '../../middlewares/admin.middleware'
 
 const router = express.Router()
 
-router.post('/', CartsController.createCart)
-router.delete('/:id', CartsController.deleteCart)
+router.use(authMiddleware)
+
+router.post('/', adminMiddleware, CartsController.createCart)
+router.delete('/:id', adminMiddleware, CartsController.deleteCart)
 router.get('/:id/products', CartsController.getProducts)
 router.post('/:cartId/products/:prodId', CartsController.saveProduct)
 router.delete('/:cartId/products/:prodId', CartsController.deleteProduct)

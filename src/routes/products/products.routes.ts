@@ -1,8 +1,11 @@
 import { Router } from 'express'
-import adminMiddleware from '../../middlewares/admin.middleware'
 import ProductsController from '../../controllers/products.controller'
+import adminMiddleware from '../../middlewares/admin.middleware'
+import authMiddleware from '../../middlewares/auth.middleware'
 
 const router = Router()
+
+router.use(authMiddleware)
 
 router.get('/', ProductsController.getProducts)
 router.get('/:id', ProductsController.getProductById)
