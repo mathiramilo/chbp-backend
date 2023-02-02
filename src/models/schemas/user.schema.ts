@@ -7,7 +7,7 @@ import { createCart } from '../../services/carts.services'
 const UserSchema = new mongoose.Schema({
   timestamp: {
     type: Date,
-    default: new Date().toLocaleString()
+    default: new Date()
   },
   fullName: {
     type: String,
