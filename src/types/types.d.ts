@@ -3,7 +3,7 @@ export interface Product {
   timestamp: string
   name: string
   description: string
-  code: string
+  category: string
   imgUrl: string
   price: number
   stock: number

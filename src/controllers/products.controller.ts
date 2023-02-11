@@ -4,8 +4,9 @@ import { getProducts, getProduct, createProduct, updateProduct, deleteProduct } 
 
 class ProductsController {
   async getProducts(req, res, next) {
+    const { category } = req.params
     try {
-      const products = await getProducts()
+      const products = await getProducts(category)
       const response = successResponse(products)
       res.json(response)
     } catch (err) {
