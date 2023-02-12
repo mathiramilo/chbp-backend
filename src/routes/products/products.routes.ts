@@ -7,7 +7,7 @@ const router = Router()
 
 // router.use(authMiddleware)
 
-router.get('/:category?', ProductsController.getProducts)
+router.get('/', ProductsController.getProducts)
 router.get('/:id', ProductsController.getProductById)
 router.post('/', adminMiddleware, ProductsController.saveProduct)
 router.put('/:id', adminMiddleware, ProductsController.updateProduct)
