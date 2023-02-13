@@ -16,23 +16,23 @@ class CartsDAO extends MongoDAO {
     return [...cart.products]
   }
 
-  async saveProduct(cartId: string, prodId: string) {
+  async saveProduct(cartId: string, prodId: string, size: number) {
     const product = await ProductsDAO.getById(prodId)
 
-    const productAlreadyInCart = await this.productExistsInCart(cartId, prodId)
+    const productAlreadyInCart = await this.productExistsInCart(cartId, prodId, size)
 
     let updatedCart
 
     if (productAlreadyInCart) {
       const cartProducts = await this.getProducts(cartId)
-      const productIndex = cartProducts.findIndex(item => item.product._id.toString() === prodId)
+      const productIndex = cartProducts.findIndex(item => item.product._id.toString() === prodId && item.size === size)
       cartProducts[productIndex].qty++
 
       updatedCart = await this.model.updateOne({ _id: cartId }, { $set: { products: cartProducts } }, { new: true })
     } else {
       updatedCart = await this.model.updateOne(
         { _id: cartId },
-        { $push: { products: { product, qty: 1 } } },
+        { $push: { products: { product, size, qty: 1 } } },
         { new: true }
       )
     }
@@ -90,9 +90,9 @@ class CartsDAO extends MongoDAO {
     return emptyCart
   }
 
-  async productExistsInCart(cartId: string, prodId: string) {
+  async productExistsInCart(cartId: string, prodId: string, size: number) {
     const cart = await this.getById(cartId)
-    const product = cart.products.find(item => item.product._id.toString() === prodId)
+    const product = cart.products.find(item => item.product._id.toString() === prodId && item.size === size)
     if (!product) {
       return false
     }

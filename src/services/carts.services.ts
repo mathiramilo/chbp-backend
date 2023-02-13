@@ -11,7 +11,13 @@ export const deleteCart = async (id: string) => await CartsDAO.delete(id)
 
 export const getProductsFromCart = async (id: string) => await CartsDAO.getProducts(id)
 
-export const saveProductToCart = async (cartId: string, prodId: string) => await CartsDAO.saveProduct(cartId, prodId)
+export const saveProductToCart = async (cartId: string, prodId: string, size: number) => {
+  if (!size) {
+    const message = 'The product size is required'
+    throw new HttpError(HTTP_STATUS.BAD_REQUEST, message)
+  }
+  return await CartsDAO.saveProduct(cartId, prodId, size)
+}
 
 export const deleteProductFromCart = async (cartId: string, prodId: string) =>
   await CartsDAO.deleteProduct(cartId, prodId)

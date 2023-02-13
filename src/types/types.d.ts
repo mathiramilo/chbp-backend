@@ -11,6 +11,7 @@ export interface Product {
 
 export interface CartProduct {
   product: Product
+  size: number
   qty: number
 }
 

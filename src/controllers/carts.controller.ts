@@ -45,8 +45,9 @@ class CartsController {
 
   async saveProduct(req, res, next) {
     const { cartId, prodId } = req.params
+    const { size } = req.body
     try {
-      const newProduct = await saveProductToCart(cartId, prodId)
+      const newProduct = await saveProductToCart(cartId, prodId, size)
       const response = successResponse(newProduct)
       res.status(HTTP_STATUS.CREATED).json(response)
     } catch (err) {
