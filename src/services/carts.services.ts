@@ -19,11 +19,21 @@ export const saveProductToCart = async (cartId: string, prodId: string, size: nu
   return await CartsDAO.saveProduct(cartId, prodId, size)
 }
 
-export const deleteProductFromCart = async (cartId: string, prodId: string) =>
-  await CartsDAO.deleteProduct(cartId, prodId)
+export const deleteProductFromCart = async (cartId: string, prodId: string, size: number) => {
+  if (!size) {
+    const message = 'The product size is required'
+    throw new HttpError(HTTP_STATUS.BAD_REQUEST, message)
+  }
+  return await CartsDAO.deleteProduct(cartId, prodId, size)
+}
 
-export const decreaseProductFromCart = async (cartId: string, prodId: string) =>
-  await CartsDAO.decreaseProduct(cartId, prodId)
+export const decreaseProductFromCart = async (cartId: string, prodId: string, size: number) => {
+  if (!size) {
+    const message = 'The product size is required'
+    throw new HttpError(HTTP_STATUS.BAD_REQUEST, message)
+  }
+  return await CartsDAO.decreaseProduct(cartId, prodId, size)
+}
 
 /* When a user checkouts, we empty the cart, send an
   email and a wpp with the order and send an SMS to the user */

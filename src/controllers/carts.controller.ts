@@ -57,8 +57,9 @@ class CartsController {
 
   async deleteProduct(req, res, next) {
     const { cartId, prodId } = req.params
+    const { size } = req.body
     try {
-      const deletedProduct = await deleteProductFromCart(cartId, prodId)
+      const deletedProduct = await deleteProductFromCart(cartId, prodId, size)
       const response = successResponse(deletedProduct)
       res.json(response)
     } catch (err) {
@@ -68,8 +69,9 @@ class CartsController {
 
   async decreaseProduct(req, res, next) {
     const { cartId, prodId } = req.params
+    const { size } = req.body
     try {
-      const decreasedProduct = await decreaseProductFromCart(cartId, prodId)
+      const decreasedProduct = await decreaseProductFromCart(cartId, prodId, size)
       const response = successResponse(decreasedProduct)
       res.json(response)
     } catch (err) {

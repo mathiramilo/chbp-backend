@@ -45,9 +45,9 @@ class CartsDAO extends MongoDAO {
     return updatedCart
   }
 
-  async deleteProduct(cartId: string, prodId: string) {
+  async deleteProduct(cartId: string, prodId: string, size: number) {
     const cartProducts = await this.getProducts(cartId)
-    const newCartProducts = cartProducts.filter(item => item.product._id.toString() !== prodId)
+    const newCartProducts = cartProducts.filter(item => item.product._id.toString() !== prodId || item.size !== size)
     const updatedCart = await this.model.updateOne(
       { _id: cartId },
       { $set: { products: newCartProducts } },
@@ -60,13 +60,13 @@ class CartsDAO extends MongoDAO {
     return updatedCart
   }
 
-  async decreaseProduct(cartId: string, prodId: string) {
+  async decreaseProduct(cartId: string, prodId: string, size: number) {
     const cartProducts = await this.getProducts(cartId)
-    const productIndex = cartProducts.findIndex(item => item.product._id.toString() === prodId)
+    const productIndex = cartProducts.findIndex(item => item.product._id.toString() === prodId && item.size === size)
     const qty = cartProducts[productIndex].qty
 
     if (qty <= 1) {
-      return await this.deleteProduct(cartId, prodId)
+      return await this.deleteProduct(cartId, prodId, size)
     }
 
     cartProducts[productIndex].qty--
