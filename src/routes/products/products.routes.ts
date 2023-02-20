@@ -5,7 +5,7 @@ import authMiddleware from '../../middlewares/auth.middleware'
 
 const router = Router()
 
-// router.use(authMiddleware)
+router.use(authMiddleware)
 
 router.get('/', ProductsController.getProducts)
 router.get('/:id', ProductsController.getProductById)

@@ -12,7 +12,7 @@ router.delete('/:id', adminMiddleware, CartsController.deleteCart)
 router.get('/:id/products', CartsController.getProducts)
 router.post('/:cartId/products/:prodId', CartsController.saveProduct)
 router.delete('/:cartId/products/:prodId', CartsController.deleteProduct)
-router.delete('/:cartId/products/decrease/:prodId', CartsController.decreaseProduct)
+router.put('/:cartId/products/:prodId/decrease', CartsController.decreaseProduct)
 router.post('/:cartId/checkout', CartsController.checkout)
 
 export default router

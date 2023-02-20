@@ -38,6 +38,8 @@ export const register = async (fullName: string, email: string, password: string
     html: bodyHtml
   })
 
+  newUser.password = undefined
+  newUser.admin = undefined
   return newUser
 }
 
@@ -51,5 +53,7 @@ export const login = async (email: string, password: string) => {
     throw new HttpError(HTTP_STATUS.UNAUTHORIZED, message)
   }
 
+  user.password = undefined
+  user.admin = undefined
   return user
 }
