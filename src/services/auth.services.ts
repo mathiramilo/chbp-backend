@@ -39,7 +39,6 @@ export const register = async (fullName: string, email: string, password: string
   })
 
   newUser.password = undefined
-  newUser.admin = undefined
   return newUser
 }
 
@@ -54,6 +53,5 @@ export const login = async (email: string, password: string) => {
   }
 
   user.password = undefined
-  user.admin = undefined
   return user
 }

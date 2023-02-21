@@ -66,7 +66,8 @@ class CartsDAO extends MongoDAO {
     const qty = cartProducts[productIndex].qty
 
     if (qty <= 1) {
-      return await this.deleteProduct(cartId, prodId, size)
+      const message = `Product with id ${prodId} and size ${size} has only one unit in cart`
+      throw new HttpError(HTTP_STATUS.BAD_REQUEST, message)
     }
 
     cartProducts[productIndex].qty--
