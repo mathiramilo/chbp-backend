@@ -48,7 +48,8 @@ export const checkout = async (cartId: string, buyer) => {
   await CartsDAO.emptyCart(cartId)
 
   // Email, Whatsapp and SMS sending
-  const totalCost = products.reduce((acc, item) => acc + item.product.price * item.qty, 0)
+  const subtotalCost = products.reduce((acc, item) => acc + item.product.price * item.qty, 0)
+  const totalCost = subtotalCost * 1.15
 
   const emailStyles = {
     productsContainer: 'margin: 10px 0px;',
@@ -60,7 +61,7 @@ export const checkout = async (cartId: string, buyer) => {
     .map(item => {
       return `
           <div style="${emailStyles.card}">
-            <h3>${item.product.name}</h3>
+            <h3>${item.product.title}</h3>
             <p>${item.product.description}</p>
             <p>Total: US$ ${item.product.price} x ${item.qty} = US$ ${(item.product.price * item.qty).toFixed(2)}</p>
           </div>

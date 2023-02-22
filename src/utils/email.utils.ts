@@ -20,9 +20,13 @@ const sendEmail = async options => {
       html: options.html
     }
 
-    const info = await transporter.sendMail(mailOptions)
+    try {
+      const info = await transporter.sendMail(mailOptions)
 
-    logger.info(`Email sended! Preview URL: ${nodemailer.getTestMessageUrl(info)}`)
+      logger.info(`Email sended! Preview URL: ${nodemailer.getTestMessageUrl(info)}`)
+    } catch (error) {
+      logger.error(error)
+    }
   })
 }
 
