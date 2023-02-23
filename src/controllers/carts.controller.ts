@@ -9,6 +9,7 @@ import {
   decreaseProductFromCart,
   checkout
 } from '../services/carts.services'
+import { Buyer, Address, Payment } from '../types/types'
 
 class CartsController {
   async createCart(req, res, next) {
@@ -81,20 +82,17 @@ class CartsController {
 
   async checkout(req, res, next) {
     const { cartId } = req.params
-    const { name, email, phone } = req.body
+    const { buyer, address, payment } = req.body
 
     try {
-      if (!name || !email || !phone) {
-        const message = 'Name, email and phone are required in the body to checkout'
+      if (!buyer || !address || !payment) {
+        const message = 'Buyer, address and payment are required in the body to checkout'
         throw new HttpError(HTTP_STATUS.BAD_REQUEST, message)
       }
 
-      const products = await checkout(cartId, { name, email, phone })
+      const order = await checkout(cartId, buyer, address, payment)
 
-      const response = successResponse({
-        buyer: { name, email, phone },
-        products
-      })
+      const response = successResponse({ order })
       res.json(response)
     } catch (err) {
       next(err)

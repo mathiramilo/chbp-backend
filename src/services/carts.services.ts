@@ -3,7 +3,9 @@ import { HttpError } from '../utils/api.utils'
 import sendEmail from '../utils/email.utils'
 import sendSMS from '../utils/sms.utils'
 import sendWhatsapp from '../utils/whatsapp.utils'
+import { Buyer, Address, Payment, CartProduct, Order } from '../types/types'
 import CartsDAO from '../models/daos/carts.dao'
+import { createOrder } from '../services/orders.services'
 
 export const createCart = async () => await CartsDAO.save()
 
@@ -37,8 +39,8 @@ export const decreaseProductFromCart = async (cartId: string, prodId: string, si
 
 /* When a user checkouts, we empty the cart, send an
   email and a wpp with the order and send an SMS to the user */
-export const checkout = async (cartId: string, buyer) => {
-  const products = await CartsDAO.getProducts(cartId)
+export const checkout = async (cartId: string, buyer: Buyer, address: Address, payment: Payment) => {
+  const products: CartProduct[] = await CartsDAO.getProducts(cartId)
 
   if (products.length < 1) {
     const message = 'The cart must have at least one product to checkout'
@@ -50,6 +52,16 @@ export const checkout = async (cartId: string, buyer) => {
   // Email, Whatsapp and SMS sending
   const subtotalCost = products.reduce((acc, item) => acc + item.product.price * item.qty, 0)
   const totalCost = subtotalCost * 1.15
+
+  // Create and save the order in the database
+  const order = {
+    products,
+    buyer,
+    address,
+    payment,
+    totalCost
+  }
+  const newOrder = await createOrder(order as Order)
 
   const emailStyles = {
     productsContainer: 'margin: 10px 0px;',
@@ -84,7 +96,7 @@ export const checkout = async (cartId: string, buyer) => {
 
   const productsListText = products
     .map(item => {
-      return `${item.qty}x ${item.product.name} (${item.product.description}) - US$ ${(
+      return `${item.qty}x ${item.product.title} (${item.product.description}) - US$ ${(
         item.product.price * item.qty
       ).toFixed(2)}`
     })
@@ -103,5 +115,5 @@ export const checkout = async (cartId: string, buyer) => {
     message: `Your order has been received and its being processed. Thanks for your purchase! CHBP Team`
   })
 
-  return products
+  return newOrder
 }
