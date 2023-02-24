@@ -4,8 +4,9 @@ import { getOrders, getOrder, createOrder, deleteOrder } from '../services/order
 
 class AuthController {
   async getOrders(req, res, next) {
+    const { email } = req.query
     try {
-      const orders = await getOrders()
+      const orders = await getOrders(email)
       const response = successResponse({ orders })
       res.status(HTTP_STATUS.OK).json(response)
     } catch (error) {

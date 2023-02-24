@@ -7,8 +7,8 @@ const router = express.Router()
 
 router.use(authMiddleware)
 
-router.get('/', adminMiddleware, OrdersController.getOrders)
-router.get('/:id', adminMiddleware, OrdersController.getOrder)
+router.get('/', OrdersController.getOrders)
+router.get('/:id', OrdersController.getOrder)
 router.post('/', OrdersController.createOrder)
 router.delete('/:id', adminMiddleware, OrdersController.deleteOrder)
 
