@@ -10,11 +10,7 @@ A well-defined layered architecture was implemented.
 
 ###
 
-###
-
 ![chbp-architecture](https://user-images.githubusercontent.com/42822912/223836563-c417a430-0a3a-4158-aed4-21122a3c8f7b.png)
-
-###
 
 ###
 
