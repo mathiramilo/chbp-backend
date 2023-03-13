@@ -2,7 +2,7 @@
 
 Footwear e-commerce API Rest developed with Node JS and Express for the final project of the Coderhouse backend development course.
 
-You can see the front end [here](https://github.com/mathiramilo/CHBP-Frontend).
+You can see the frontend [here](https://github.com/mathiramilo/CHBP-Frontend).
 
 ## Architecture
 
@@ -14,7 +14,7 @@ A well-defined layered architecture was implemented.
 
 ###
 
-`1. Presentation Layer (Front End)`
+`1. Presentation Layer (Frontend)`
 
 For the presentation layer, a web application was developed with React. You can see it [here](https://github.com/mathiramilo/CHBP-Frontend).
 
