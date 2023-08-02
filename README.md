@@ -1,6 +1,6 @@
 ﻿# CHBP API
 
-Footwear e-commerce API Rest developed with Node JS and Express for the final project of the Coderhouse backend development course.
+Footwear e-commerce Rest API developed with Node JS, Express and MongoDB for the final project of the Coderhouse backend development course.
 
 You can see the frontend [here](https://github.com/mathiramilo/CHBP-Frontend).
 
