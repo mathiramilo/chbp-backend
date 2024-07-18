@@ -5,6 +5,7 @@ import sendSMS from '../utils/sms.utils'
 import sendWhatsapp from '../utils/whatsapp.utils'
 import { Buyer, Address, Payment, CartProduct, Order } from '../types/types'
 import CartsDAO from '../models/daos/carts.dao'
+import UsersDao from '../models/daos/users.dao'
 import { createOrder } from '../services/orders.services'
 
 export const createCart = async () => await CartsDAO.save()
@@ -39,8 +40,14 @@ export const decreaseProductFromCart = async (cartId: string, prodId: string, si
 
 /* When a user checkouts, we empty the cart, send an
   email and a wpp with the order and send an SMS to the user */
-export const checkout = async (cartId: string, buyer: Buyer, address: Address, payment: Payment) => {
+export const checkout = async (cartId: string, buyerId: string, address: Address, payment: Payment) => {
   const products: CartProduct[] = await CartsDAO.getProducts(cartId)
+  const buyerUser = await UsersDao.getById(buyerId)
+  const buyer: Buyer = {
+    name: buyerUser.fullName,
+    email: buyerUser.email,
+    phone: buyerUser.phone
+  }
 
   if (products.length < 1) {
     const message = 'The cart must have at least one product to checkout'
@@ -70,7 +77,7 @@ export const checkout = async (cartId: string, buyer: Buyer, address: Address, p
   }
 
   const productsCardsHtml = products
-    .map(item => {
+    .map((item) => {
       return `
           <div style="${emailStyles.card}">
             <h3>${item.product.title}</h3>
@@ -95,7 +102,7 @@ export const checkout = async (cartId: string, buyer: Buyer, address: Address, p
   })
 
   const productsListText = products
-    .map(item => {
+    .map((item) => {
       return `${item.qty}x ${item.product.title} (${item.product.description}) - US$ ${(
         item.product.price * item.qty
       ).toFixed(2)}`

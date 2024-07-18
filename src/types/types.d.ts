@@ -54,8 +54,7 @@ export interface Address {
 }
 
 export interface Payment {
-  cardNumber: number
-  cardHolder: string
-  expirationDate: string
-  cvv: number
+  provider: string
+  method: string
+  id: string
 }

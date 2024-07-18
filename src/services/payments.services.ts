@@ -18,7 +18,7 @@ export const createPreference = async (cartId) => {
     body: {
       items,
       back_urls: {
-        success: envConfig.MP_SUCCESS_URL + '?cartId=' + cartId,
+        success: envConfig.MP_SUCCESS_URL + '?cartId=' + cartId + '&paymentProvider=mercadopago',
         pending: envConfig.MP_PENDING_URL,
         failure: envConfig.MP_FAILURE_URL
       },
