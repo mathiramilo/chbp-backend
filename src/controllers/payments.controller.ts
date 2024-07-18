@@ -4,9 +4,9 @@ import { createPreference } from '../services/payments.services'
 
 class PaymentsController {
   async createPreference(req, res, next) {
-    const { cartId, buyer, address } = req.body
+    const { cartId, buyerId, address } = req.body
     try {
-      const preference = await createPreference(cartId)
+      const preference = await createPreference(cartId, buyerId, address)
       const response = successResponse(preference)
       res.status(HTTP_STATUS.OK).json(response)
     } catch (err) {
