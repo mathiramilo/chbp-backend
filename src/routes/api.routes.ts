@@ -1,8 +1,9 @@
 import { Router } from 'express'
-import productsRoutes from './products/products.routes'
-import cartRoutes from './carts/carts.routes'
-import authRoutes from './auth/auth.routes'
-import ordersRoutes from './orders/orders.routes'
+import productsRoutes from './products.routes'
+import cartRoutes from './carts.routes'
+import authRoutes from './auth.routes'
+import ordersRoutes from './orders.routes'
+import paymentsRoutes from './payments.routes'
 
 const router = Router()
 
@@ -10,5 +11,6 @@ router.use('/products', productsRoutes)
 router.use('/cart', cartRoutes)
 router.use('/auth', authRoutes)
 router.use('/orders', ordersRoutes)
+router.use('/payments', paymentsRoutes)
 
 export default router

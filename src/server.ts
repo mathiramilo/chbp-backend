@@ -10,7 +10,7 @@ const server = app.listen(envConfig.PORT, () => {
   })
 })
 
-server.on('error', error => {
+server.on('error', (error) => {
   logger.error(`Error: ${error}`)
 })
 

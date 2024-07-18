@@ -1,7 +1,7 @@
 import express from 'express'
-import CartsController from '../../controllers/carts.controller'
-import authMiddleware from '../../middlewares/auth.middleware'
-import adminMiddleware from '../../middlewares/admin.middleware'
+import CartsController from '../controllers/carts.controller'
+import authMiddleware from '../middlewares/auth.middleware'
+import adminMiddleware from '../middlewares/admin.middleware'
 
 const router = express.Router()
 
