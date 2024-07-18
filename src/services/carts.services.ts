@@ -96,11 +96,6 @@ export const checkout = async (cartId: string, buyerId: string, address: Address
         <h2 style="${emailStyles.title}">Total: US$ ${totalCost.toFixed(2)}</h2>
       `
 
-  sendEmail({
-    subject: `New Order of ${buyer.name} - (${buyer.email})`,
-    html: bodyHtml
-  })
-
   const productsListText = products
     .map((item) => {
       return `${item.qty}x ${item.product.title} (${item.product.description}) - US$ ${(
@@ -110,17 +105,26 @@ export const checkout = async (cartId: string, buyerId: string, address: Address
     .join('\n')
 
   const text = `New Order of ${buyer.name} - (${buyer.email})
-  
-  ${productsListText}`
+      
+      ${productsListText}`
 
-  sendWhatsapp({
-    message: text
-  })
+  try {
+    sendEmail({
+      subject: `New Order of ${buyer.name} - (${buyer.email})`,
+      html: bodyHtml
+    })
 
-  sendSMS({
-    to: buyer.phone,
-    message: `Your order has been received and its being processed. Thanks for your purchase! CHBP Team`
-  })
+    sendWhatsapp({
+      message: text
+    })
+
+    sendSMS({
+      to: buyer.phone,
+      message: `Your order has been received and its being processed. Thanks for your purchase! CHBP Team`
+    })
+  } catch (error) {
+    console.error('Error sending email, sms or whatsapp', error)
+  }
 
   return newOrder
 }
